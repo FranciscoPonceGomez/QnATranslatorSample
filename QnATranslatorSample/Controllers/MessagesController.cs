@@ -22,7 +22,7 @@ namespace QnATranslatorSample
             if (activity.GetActivityType() == ActivityTypes.Message)
             {
                 var input = activity.Text;
-                var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["ApiKey"]);
+                var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["TranslatorApiKey"]);
                 var output = await Translator.TranslateText(input, targetLang, accessToken);
                 activity.Text = output;
 

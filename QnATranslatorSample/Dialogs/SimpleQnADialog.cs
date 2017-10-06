@@ -29,7 +29,7 @@ namespace QnATranslatorSample.Dialogs
 
             var answer = result.Answers.First().Answer;
             Activity reply = ((Activity)context.Activity).CreateReply();
-            var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["ApiKey"]);
+            var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["TranslatorApiKey"]);
             reply.Text = await Translator.TranslateText(answer, targetLang, accessToken);
 
             await context.PostAsync(reply);
