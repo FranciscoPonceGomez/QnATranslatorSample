@@ -24,7 +24,7 @@ namespace QnATranslatorSample.Dialogs
         }
         protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults result)
         {
-            string ApiKey = "96ab42c0eca04fe18084c861a1ac06a8";
+            string ApiKey = "";
             string targetLang = "es";
 
             var answer = result.Answers.First().Answer;

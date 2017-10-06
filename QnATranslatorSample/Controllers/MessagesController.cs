@@ -16,7 +16,7 @@ namespace QnATranslatorSample
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
-        string ApiKey = "96ab42c0eca04fe18084c861a1ac06a8";
+        string ApiKey = "";
         string targetLang = "en";
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
