@@ -22,5 +22,17 @@ namespace QnATranslatorSample.Dialogs
             {
             }
         }
+        protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults result)
+        {
+            string ApiKey = "96ab42c0eca04fe18084c861a1ac06a8";
+            string targetLang = "es";
+
+            var answer = result.Answers.First().Answer;
+            Activity reply = ((Activity)context.Activity).CreateReply();
+            var accessToken = await MessagesController.GetAuthenticationToken(ApiKey);
+            reply.Text = await MessagesController.TranslateText(answer, targetLang, accessToken);
+
+            await context.PostAsync(reply);
+        }
     }
 }

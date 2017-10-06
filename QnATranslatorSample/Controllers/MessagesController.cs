@@ -16,7 +16,7 @@ namespace QnATranslatorSample
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
-        string ApiKey = "";
+        string ApiKey = "96ab42c0eca04fe18084c861a1ac06a8";
         string targetLang = "en";
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
@@ -37,7 +37,7 @@ namespace QnATranslatorSample
             return response;
         }
 
-        static async Task<string> TranslateText(string inputText, string language, string accessToken)
+        public static async Task<string> TranslateText(string inputText, string language, string accessToken)
         {
             string url = "http://api.microsofttranslator.com/v2/Http.svc/Translate";
             string query = $"?text={System.Net.WebUtility.UrlEncode(inputText)}&to={language}&contentType=text/plain";
@@ -53,7 +53,7 @@ namespace QnATranslatorSample
             }
         }
 
-        static async Task<string> GetAuthenticationToken(string key)
+        public static async Task<string> GetAuthenticationToken(string key)
         {
             string endpoint = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 
