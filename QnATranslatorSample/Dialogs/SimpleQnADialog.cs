@@ -7,6 +7,7 @@ using Microsoft.Bot.Connector;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.CognitiveServices.QnAMaker;
 using Newtonsoft.Json.Linq;
+using QnATranslatorSample.Utils;
 
 namespace QnATranslatorSample.Dialogs
 {
@@ -24,13 +25,12 @@ namespace QnATranslatorSample.Dialogs
         }
         protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults result)
         {
-            string ApiKey = "";
-            string targetLang = "es";
+            string targetLang = "en";
 
             var answer = result.Answers.First().Answer;
             Activity reply = ((Activity)context.Activity).CreateReply();
-            var accessToken = await MessagesController.GetAuthenticationToken(ApiKey);
-            reply.Text = await MessagesController.TranslateText(answer, targetLang, accessToken);
+            var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["ApiKey"]);
+            reply.Text = await Translator.TranslateText(answer, targetLang, accessToken);
 
             await context.PostAsync(reply);
         }
