@@ -25,12 +25,11 @@ namespace QnATranslatorSample.Dialogs
         }
         protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults result)
         {
-            string targetLang = "en";
-
             var answer = result.Answers.First().Answer;
             Activity reply = ((Activity)context.Activity).CreateReply();
-            var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["TranslatorApiKey"]);
-            reply.Text = await Translator.TranslateText(answer, targetLang, accessToken);
+            var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["TranslatorApiKey"]).ConfigureAwait(false);
+            string targetLang = await Translator.DetectLanguage(answer, accessToken).ConfigureAwait(false);
+            reply.Text = await Translator.TranslateText(answer, Translator.originLanguage, accessToken).ConfigureAwait(false);
 
             await context.PostAsync(reply);
         }

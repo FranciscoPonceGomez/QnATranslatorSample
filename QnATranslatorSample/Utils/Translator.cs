@@ -11,6 +11,7 @@ namespace QnATranslatorSample.Utils
 {
     public static class Translator
     {
+        public static string originLanguage { get; set; }
         public static async Task<string> TranslateText(string inputText, string language, string accessToken)
         {
             string url = "http://api.microsofttranslator.com/v2/Http.svc/Translate";
@@ -18,7 +19,7 @@ namespace QnATranslatorSample.Utils
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                var response = await client.GetAsync(url + query);
+                var response = await client.GetAsync(url + query).ConfigureAwait(false);
                 var result = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                     return "Hata: " + result;
@@ -34,9 +35,25 @@ namespace QnATranslatorSample.Utils
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
-                var response = await client.PostAsync(endpoint, null);
-                var token = await response.Content.ReadAsStringAsync();
+                var response = await client.PostAsync(endpoint, null).ConfigureAwait(false);
+                var token = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return token;
+            }
+        }
+
+        public static async Task<string> DetectLanguage(string inputText, string accessToken)
+        {
+            string url = "https://api.microsofttranslator.com/V2/Http.svc/Detect";
+            string query = $"?text={System.Net.WebUtility.UrlEncode(inputText)}&contentType=text/plain";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var response = await client.GetAsync(url + query).ConfigureAwait(false);
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode)
+                    return "Hata: " + result;
+                var language = XElement.Parse(result).Value;
+                return language;
             }
         }
     }

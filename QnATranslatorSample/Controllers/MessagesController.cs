@@ -16,14 +16,15 @@ namespace QnATranslatorSample
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
-        string targetLang = "en";
+
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
             if (activity.GetActivityType() == ActivityTypes.Message)
             {
                 var input = activity.Text;
-                var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["TranslatorApiKey"]);
-                var output = await Translator.TranslateText(input, targetLang, accessToken);
+                var accessToken = await Translator.GetAuthenticationToken(ConfigurationManager.AppSettings["TranslatorApiKey"]).ConfigureAwait(false);
+                Translator.originLanguage = await Translator.DetectLanguage(input, accessToken).ConfigureAwait(false);
+                var output = await Translator.TranslateText(input, "en", accessToken).ConfigureAwait(false);
                 activity.Text = output;
 
                 await Conversation.SendAsync(activity, () => new Dialogs.SimpleQnADialog());
