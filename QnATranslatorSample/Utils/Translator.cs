@@ -51,9 +51,9 @@ namespace QnATranslatorSample.Utils
                 var response = await client.GetAsync(url + query).ConfigureAwait(false);
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode)
-                    return "Hata: " + result;
-                var language = XElement.Parse(result).Value;
-                return language;
+                    return "en";
+                else
+                    return XElement.Parse(result).Value;
             }
         }
     }
