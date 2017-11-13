@@ -22,7 +22,7 @@ namespace QnATranslatorSample.Utils
                 var response = await client.GetAsync(url + query).ConfigureAwait(false);
                 var result = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
-                    return "Hata: " + result;
+                    return "Error: " + result;
                 var translatedText = XElement.Parse(result).Value;
                 return translatedText;
             }
