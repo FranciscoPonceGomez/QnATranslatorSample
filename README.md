@@ -3,7 +3,9 @@ Sample of how to create a QnA Bot using Microsoft Translator API
 
 This bot translates the user’s question to English, sends it to QnAMaker and then translates the answer back to the language that you have selected to show to the user. 
 
-Feel free to clone the repro and just update Web.config with you own credentials to give it a try
+Feel free to clone the repro and just update Web.config with you own credentials to give it a try:
+http://qnabot2920170926101650.azurewebsites.net/
+
 
 ```cs
 	<appSettings>
